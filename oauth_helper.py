@@ -93,7 +93,7 @@ class BrandCountrySelector(QWidget):
             auth_url = (
                 f"{oauth_url}/am/oauth2/authorize?"
                 f"client_id={client_id}&response_type=code&"
-                f"redirect_uri={scheme}://oauth2redirect/fr&scope=openid%20profile%20email&locale={locale}"
+                f"redirect_uri={scheme}://oauth2redirect/{country.lower()}&scope=openid%20profile%20email&locale={locale}"
             )
 
             print(f"Authentication URL: {auth_url}")  # Debug
