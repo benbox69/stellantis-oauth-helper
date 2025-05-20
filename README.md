@@ -2,7 +2,7 @@
 
 A simple Python GUI tool to assist with the OAuth2 authorization flow for Stellantis services (MyPeugeot, MyCitroën, MyDS, MyOpel, MyVauxhall, etc.).
 
-This tool dynamically fetches the latest configuration from the official [Home Assistant Stellantis integration](https://github.com/andreadegiovine/homeassistant-stellantis-vehicles), and allows users to easily retrieve the OAuth2 authorization code without manual browser inspection.
+This tool dynamically fetches the latest configuration from the [Home Assistant Stellantis integration](https://github.com/andreadegiovine/homeassistant-stellantis-vehicles), and allows users to easily retrieve the OAuth2 authorization code without manual browser inspection.
 
 ## ✨ Features
 
