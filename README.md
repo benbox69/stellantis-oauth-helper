@@ -27,7 +27,7 @@ pip install PyQt5 PyQtWebEngine
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/stellantis-oauth-helper.git
+git clone https://github.com/benbox69/stellantis-oauth-helper.git
 cd stellantis-oauth-helper
 ```
 
