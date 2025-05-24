@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 import json
 import urllib.request
@@ -15,8 +17,8 @@ WINDOW_TITLE = "Brand and Country Selection"
 BRAND_LABEL = "Choose the brand:"
 COUNTRY_LABEL = "Choose the country:"
 CONTINUE_BUTTON = "Continue"
-OAUTH_POPUP_TITLE = "✅ OAuth Code Retrieved"
-COPY_BUTTON_TEXT = "📋 Copy the code"
+OAUTH_POPUP_TITLE = "OAuth Code Retrieved"
+COPY_BUTTON_TEXT = "Copy the code"
 
 def download_configs():
     """Télécharge les configurations depuis l'URL spécifiée."""
@@ -147,7 +149,7 @@ class OAuthPopup(QWidget):
         self.setGeometry(400, 400, 500, 100)
 
         layout = QVBoxLayout()
-        self.label = QLabel(f"🔑 OAuth Code:\n{code}")
+        self.label = QLabel(f"OAuth Code:\n{code}")
         self.label.setTextInteractionFlags(Qt.TextSelectableByMouse)
         layout.addWidget(self.label)
 
