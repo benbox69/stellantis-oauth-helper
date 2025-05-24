@@ -12,7 +12,6 @@ from urllib.parse import urlparse, parse_qs
 
 CONFIG_URL = "https://raw.githubusercontent.com/andreadegiovine/homeassistant-stellantis-vehicles/develop/custom_components/stellantis_vehicles/configs.json"
 
-# Constantes pour les textes
 WINDOW_TITLE = "Brand and Country Selection"
 BRAND_LABEL = "Choose the brand:"
 COUNTRY_LABEL = "Choose the country:"
@@ -21,27 +20,25 @@ OAUTH_POPUP_TITLE = "OAuth Code Retrieved"
 COPY_BUTTON_TEXT = "Copy the code"
 
 def download_configs():
-    """Télécharge les configurations depuis l'URL spécifiée."""
     try:
         with urllib.request.urlopen(CONFIG_URL) as response:
             data = json.loads(response.read().decode())
-            print("Configurations téléchargées :", data)  # Debug
+            print("Configurations téléchargées : {}".format(data))
             return data
     except Exception as e:
-        print(f"Erreur lors du téléchargement des configurations : {e}")
-        QMessageBox.critical(None, "Error", f"Failed to download configurations: {e}")
+        print("Erreur lors du téléchargement des configurations : {}".format(e))
+        QMessageBox.critical(None, "Error", "Failed to download configurations: {}".format(e))
         sys.exit(1)
 
 class BrandCountrySelector(QWidget):
     def __init__(self, configs):
-        super().__init__()
+        super(BrandCountrySelector, self).__init__()
         self.configs = configs
         self.setWindowTitle(WINDOW_TITLE)
         self.setGeometry(400, 300, 400, 200)
 
         self.layout = QVBoxLayout()
 
-        # Sélection de la marque
         self.brand_label = QLabel(BRAND_LABEL)
         self.layout.addWidget(self.brand_label)
 
@@ -51,36 +48,30 @@ class BrandCountrySelector(QWidget):
         self.brand_combo.currentTextChanged.connect(self.update_countries)
         self.layout.addWidget(self.brand_combo)
 
-        # Sélection du pays
         self.country_label = QLabel(COUNTRY_LABEL)
         self.layout.addWidget(self.country_label)
 
         self.country_combo = QComboBox()
         self.layout.addWidget(self.country_combo)
 
-        # Bouton de validation
         self.start_button = QPushButton(CONTINUE_BUTTON)
         self.start_button.clicked.connect(self.launch_browser)
         self.layout.addWidget(self.start_button)
 
         self.setLayout(self.layout)
-
-        # Initialisation : sélectionne la première marque et charge les pays
         self.update_countries(self.brand_combo.currentText())
 
     def update_countries(self, brand_name):
-        """Met à jour la liste des pays pour la marque sélectionnée."""
         self.country_combo.clear()
         try:
             countries = self.configs[brand_name]["configs"].keys()
             self.country_combo.addItems(sorted(countries))
             self.country_combo.setCurrentIndex(0)
         except KeyError:
-            print(f"No countries available for brand: {brand_name}")
+            print("No countries available for brand: {}".format(brand_name))
             self.country_combo.clear()
 
     def launch_browser(self):
-        """Lance le navigateur avec les informations sélectionnées."""
         brand = self.brand_combo.currentText()
         country = self.country_combo.currentText()
 
@@ -92,40 +83,38 @@ class BrandCountrySelector(QWidget):
             locale = country_cfg["locale"]
             client_id = country_cfg["client_id"]
 
-            auth_url = (
-                f"{oauth_url}/am/oauth2/authorize?"
-                f"client_id={client_id}&response_type=code&"
-                f"redirect_uri={scheme}://oauth2redirect/{country.lower()}&scope=openid%20profile%20email&locale={locale}"
+            auth_url = "{}{}?client_id={}&response_type=code&redirect_uri={}://oauth2redirect/{}&scope=openid%20profile%20email&locale={}".format(
+                oauth_url, "/am/oauth2/authorize", client_id, scheme, country.lower(), locale
             )
 
-            print(f"Authentication URL: {auth_url}")  # Debug
+            print("Authentication URL: {}".format(auth_url))
 
             self.browser_window = OAuthBrowser(auth_url, scheme)
             self.browser_window.show()
             self.close()
         except KeyError as e:
-            print(f"Error: Missing key - {e}")
-            QMessageBox.critical(self, "Error", f"Missing configuration key: {e}")
+            print("Error: Missing key - {}".format(e))
+            QMessageBox.critical(self, "Error", "Missing configuration key: {}".format(e))
 
 class CustomWebPage(QWebEnginePage):
     def __init__(self, scheme, parent=None):
-        super().__init__(parent)
+        super(CustomWebPage, self).__init__(parent)
         self.scheme = scheme
 
     def acceptNavigationRequest(self, url, nav_type, is_main_frame):
         url_str = url.toString()
-        if url_str.startswith(f"{self.scheme}://"):
+        if url_str.startswith("{}://".format(self.scheme)):
             parsed = urlparse(url_str)
             params = parse_qs(parsed.query)
             code = params.get("code", [""])[0]
 
             self.view().parent().show_oauth_popup(code)
             return False
-        return super().acceptNavigationRequest(url, nav_type, is_main_frame)
+        return super(CustomWebPage, self).acceptNavigationRequest(url, nav_type, is_main_frame)
 
 class OAuthBrowser(QWidget):
     def __init__(self, auth_url, scheme):
-        super().__init__()
+        super(OAuthBrowser, self).__init__()
         self.setWindowTitle("Connexion Stellantis")
         self.setGeometry(300, 300, 900, 700)
 
@@ -144,12 +133,12 @@ class OAuthBrowser(QWidget):
 
 class OAuthPopup(QWidget):
     def __init__(self, code):
-        super().__init__()
+        super(OAuthPopup, self).__init__()
         self.setWindowTitle(OAUTH_POPUP_TITLE)
         self.setGeometry(400, 400, 500, 100)
 
         layout = QVBoxLayout()
-        self.label = QLabel(f"OAuth Code:\n{code}")
+        self.label = QLabel("OAuth Code:\n{}".format(code))
         self.label.setTextInteractionFlags(Qt.TextSelectableByMouse)
         layout.addWidget(self.label)
 
@@ -161,7 +150,6 @@ class OAuthPopup(QWidget):
 
 if __name__ == "__main__":
     configs = download_configs()
-
     app = QApplication(sys.argv)
     selector = BrandCountrySelector(configs)
     selector.show()
