@@ -1,0 +1,2 @@
+PyQtWebEngine==5.15.7
+PyQt5==5.15.11

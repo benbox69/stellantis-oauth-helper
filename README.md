@@ -12,15 +12,12 @@ This tool dynamically fetches the latest configuration from the [Home Assistant 
 - ✅ Embedded browser for authentication  
 - ✅ Automatically intercepts redirect and extracts the OAuth2 `code`  
 - ✅ One-click copy of the authorization code  
+- ✅ Languages supported: French, English  
 
 ## ⚙️ Prerequisites
 
 - Python 3.7 or higher  
-- Required Python packages:
-
-```bash
-pip install PyQt5 PyQtWebEngine
-```
+- Required Python packages: PyQt5, PyQtWebEngine (see [requirements.txt](requirements.txt))
 
 ## 🚀 How to Use
 
@@ -31,10 +28,28 @@ git clone https://github.com/benbox69/stellantis-oauth-helper.git
 cd stellantis-oauth-helper
 ```
 
-### 2. Run the Application
+### 2. Run the Virtual Environment and Install Dependencies
+
+```bash
+python -m venv .venv
+
+# Activate in PowerShell
+.venv\Scripts\Activate.ps1
+# Activate in Linux/MacOS Bash
+source .venv/bin/activate
+
+python -m pip install -r requirements.txt
+```
+
+### 3. Run the Application
 
 ```bash
 python oauth_helper.py
+# available switches:
+# --locale fr|en (auto detects by default)
+# --debug
+# --scale F (where F is a float for the UI scaling factor - try 2.5)
+# --font-size I (where I is an int for the font size - try 16)
 ```
 
 ## 🖥️ Application Flow
