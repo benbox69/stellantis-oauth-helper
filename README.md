@@ -1,3 +1,7 @@
+# Not maintained
+
+This repository is no longer maintained. It is kept online for reference only.
+
 # stellantis-oauth-helper
 
 A simple Python GUI tool to assist with the OAuth2 authorization flow for Stellantis services (MyPeugeot, MyCitroën, MyDS, MyOpel and MyVauxhall).
