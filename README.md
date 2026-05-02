@@ -33,8 +33,8 @@ cd stellantis-oauth-helper
 ```bash
 python -m venv .venv
 
-# Activate in PowerShell
-.venv\Scripts\Activate.ps1
+# Activate in Command Prompt
+.venv\Scripts\activate.bat
 # Activate in Linux/MacOS Bash
 source .venv/bin/activate
 
